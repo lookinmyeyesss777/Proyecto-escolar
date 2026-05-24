@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Captura de Calificaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .input-calificacion { width: 90px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-primary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Control Escolar</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-0">Captura de Calificaciones</h2>
+                <p class="text-muted fs-5 mb-0">
+                    Grupo: {{ grupo.nombre }} | Materia: {{ grupo.materia.nombre }} | Periodo: {{ grupo.periodo.nombre }}
+                </p>
+            </div>
+            <a href="{% url 'grupo_list' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <form method="POST">
+                    {% csrf_token %} <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="px-4 py-3">No.</th>
+                                <th class="py-3">Matrícula</th>
+                                <th class="py-3">Nombre del Estudiante</th>
+                                <th class="py-3">Carrera</th>
+                                <th class="px-4 py-3 text-end">Calificación Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for estudiante in estudiantes %}
+                            <tr>
+                                <td class="px-4 fw-bold text-muted">{{ forloop.counter }}</td>
+                                <td>{{ estudiante.matricula }}</td>
+                                <td>{{ estudiante.nombre }} {{ estudiante.apellidos }}</td>
+                                <td>{{ estudiante.carrera.nombre }}</td>
+                                <td class="px-4 text-end">
+                                    <input type="number" step="0.01" min="0" max="100" 
+                                           class="form-control input-calificacion ms-auto" 
+                                           name="calif_{{ estudiante.id }}" 
+                                           placeholder="0.00" required>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    No hay estudiantes inscritos en este grupo todavía.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="card-footer bg-white text-end py-3">
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">
+                            <i class="bi bi-save me-2"></i> Guardar Todas las Calificaciones
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

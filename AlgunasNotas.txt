@@ -1,0 +1,8 @@
+-en la seccion de estudiantes debe de aparecer e apellido y el grupo en la lista.
+
+-en la seccion de profesores debe de aparecr apellido.
+
+-en la seccion de grupos debe de aparecer la carrera. ademas de agregar la seccion para meter de que carrera es desde la alta de grupo.
+
+-quitar el boton de calificaciones del dashboard ya que esa seccion esta en las acciones del grupo.
+

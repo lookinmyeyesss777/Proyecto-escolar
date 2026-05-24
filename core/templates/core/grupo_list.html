@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Control Escolar</a>
+    </div>
+</nav>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Grupos</h2>
+        <a href="{% url 'grupo_create' %}" class="btn btn-success">Nuevo Grupo</a>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Carrera</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for grupo in grupos %}
+            <tr>
+                <td>{{ grupo.id }}</td>
+                <td>{{ grupo.nombre }}</td>
+                <td>{{ grupo.carrera }}</td>
+                <td>
+                    <a href="{% url 'capturar_calificaciones' grupo.id %}" class="btn btn-sm btn-info text-white">
+                    <i class="bi bi-journal-check"></i> Calificaciones
+                </a>
+                    <a href="{% url 'grupo_update' grupo.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'grupo_delete' grupo.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4" class="text-center">No hay grupos registrados.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="/" class="btn btn-secondary mt-3">Volver al inicio</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
