@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -74,14 +77,25 @@ WSGI_APPLICATION = 'control_escolar.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
+#    'default2': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#       'NAME': 'ProyectoEscolarDjango',
+#      'USER': 'postgres',
+#     'PASSWORD': '2003',
+    #    'HOST': 'localhost',
+#   'PORT': '5433',
+    #}
+
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ProyectoEscolarDjango',
-        'USER': 'postgres',
-        'PASSWORD': '2003',
-        'HOST': 'localhost',
-        'PORT': '5433',
+        'NAME': os.getenv('DB_NAME', 'db_proyectoescolar'),
+        'USER': os.getenv('DB_USERNAME', 'irving'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'iBbA81MG52t6q4q0w6t6bAa0t94CvXUZ'),
+        'HOST': os.getenv('DB_HOST', 'dpg-d89qc15ckfvc738t497g-a'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
+
+
 }
 
 
