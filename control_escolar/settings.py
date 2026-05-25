@@ -28,7 +28,8 @@ SECRET_KEY = 'django-insecure-vr9gxidy-o6ygy-fq+rwng(^jgq4@st*^h(e!duij4jxft&g6c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['proyecto-escolar-z8i7.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -82,7 +83,7 @@ DATABASES = {
 #       'NAME': 'ProyectoEscolarDjango',
 #      'USER': 'postgres',
 #     'PASSWORD': '2003',
-    #    'HOST': 'localhost',
+#       'HOST': 'localhost',
 #   'PORT': '5433',
     #}
 
