@@ -92,12 +92,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'db_proyectoescolar'),
         'USER': os.getenv('DB_USERNAME', 'irving'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'iBbA81MG52t6q4q0w6t6bAa0t94CvXUZ'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'iBbA8lMG52t6q4q0w6t6bAa0t94CvXUZ'), # <-- Ya tiene la 'l' minúscula
         'HOST': os.getenv('DB_HOST', 'dpg-d89qc15ckfvc738t497g-a'),
         'PORT': os.getenv('DB_PORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'require', # <-- Esto soluciona el bloqueo SSL de Render
+        },
     }
-
-
 }
 
 
