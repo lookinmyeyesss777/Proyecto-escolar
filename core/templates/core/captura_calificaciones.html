@@ -5,38 +5,78 @@
     <title>Captura de Calificaciones</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         body { background-color: #f8f9fa; }
         .input-calificacion { width: 90px; text-align: center; font-weight: bold; }
+        
+        .tabla-reporte td {
+            font-size: 0.95rem;
+            color: #333;
+        }
     </style>
 </head>
 <body>
 
     <nav class="navbar navbar-dark bg-primary mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Control Escolar</a>
+            <a class="navbar-brand" href="/">Control Escolar</a>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mb-5">
         
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0 text-dark fw-bold">Reporte Parcial de Calificaciones</h3>
+            
             <div>
-                <h2 class="mb-0">Captura de Calificaciones</h2>
-                <p class="text-muted fs-5 mb-0">
-                    Grupo: {{ grupo.nombre }} | Materia: {{ grupo.materia.nombre }} | Periodo: {{ grupo.periodo.nombre }}
-                </p>
+                <button onclick="generarPDF()" class="btn btn-danger btn-sm shadow-sm me-2">
+                    <i class="bi bi-file-earmark-pdf"></i> Generar PDF
+                </button>
+                <a href="{% url 'grupo_list' %}" class="btn btn-secondary btn-sm shadow-sm">
+                    <i class="bi bi-arrow-left"></i> Volver a Grupos
+                </a>
             </div>
-            <a href="{% url 'grupo_list' %}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> Volver
-            </a>
         </div>
 
-        <div class="card border-0 shadow-sm">
-            <div class="card-body p-0">
-                <form method="POST">
-                    {% csrf_token %} <table class="table table-hover table-striped mb-0 align-middle">
-                        <thead class="table-light">
+        <div id="zona-impresion" class="bg-white p-2">
+            
+            <div class="card border-dark shadow-sm mb-4 rounded-0">
+                <table class="table table-bordered border-dark mb-0 tabla-reporte">
+                    <tbody>
+                        <tr>
+                            <td class="w-75 py-2">
+                                Materia: <strong class="text-uppercase ms-1">{{ grupo.materia.nombre }}</strong>
+                            </td>
+                            <td class="w-25 py-2 bg-light">
+                                Periodo: <strong class="ms-1">{{ grupo.periodo.nombre }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-2">
+                                Grupo: <strong class="ms-1 text-uppercase">{{ grupo.nombre }}</strong>
+                                <span class="ms-4">Carrera: <strong class="ms-1">{{ grupo.materia.carrera.nombre }}</strong></span>
+                            </td>
+                            <td class="py-2 bg-light">
+                                Estudiantes: <strong class="ms-1">{{ grupo.estudiantes.count }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="py-2">
+                                Docente: <strong class="text-uppercase ms-1">{{ grupo.profesor.nombre }} {{ grupo.profesor.apellidos }}</strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-0">
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        
+                        <thead class="table-primary">
                             <tr>
                                 <th class="px-4 py-3">No.</th>
                                 <th class="py-3">Matrícula</th>
@@ -51,12 +91,27 @@
                                 <td class="px-4 fw-bold text-muted">{{ forloop.counter }}</td>
                                 <td>{{ estudiante.matricula }}</td>
                                 <td>{{ estudiante.nombre }} {{ estudiante.apellidos }}</td>
+                                
                                 <td>{{ estudiante.carrera.nombre }}</td>
+                                
                                 <td class="px-4 text-end">
-                                    <input type="number" step="0.01" min="0" max="100" 
-                                           class="form-control input-calificacion ms-auto" 
-                                           name="calif_{{ estudiante.id }}" 
-                                           placeholder="0.00" required>
+                                    
+                                    <form method="POST" class="m-0 d-flex justify-content-end align-items-center">
+                                        {% csrf_token %}
+                                        
+                                        <input type="hidden" name="estudiante_id" value="{{ estudiante.id }}">
+                                        
+                                        <input type="number" step="0.01" min="0" max="100" 
+                                               class="form-control input-calificacion me-2" 
+                                               name="calificacion" 
+                                               placeholder="0.00" required
+                                               value="{{ estudiante.calificacion_actual }}">
+                                               
+                                        <button type="submit" class="btn btn-sm btn-primary btn-guardar">
+                                            <i class="bi bi-save me-1"></i> Guardar
+                                        </button>
+                                    </form>
+
                                 </td>
                             </tr>
                             {% empty %}
@@ -68,16 +123,52 @@
                             {% endfor %}
                         </tbody>
                     </table>
-
-                    <div class="card-footer bg-white text-end py-3">
-                        <button type="submit" class="btn btn-primary px-4 fw-bold">
-                            <i class="bi bi-save me-2"></i> Guardar Todas las Calificaciones
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
+
+        </div> 
         </div>
 
-    </div>
+    <script>
+        function generarPDF() {
+            // 1. Seleccionamos lo que queremos imprimir
+            const elemento = document.getElementById('zona-impresion');
+            
+            // 2. Escondemos los botones de "Guardar" para que no salgan en el PDF
+            const botones = document.querySelectorAll('.btn-guardar');
+            botones.forEach(btn => btn.style.display = 'none');
+            
+            // 3. Le quitamos el borde a las cajitas de texto para que luzca como un documento oficial
+            const inputs = document.querySelectorAll('.input-calificacion');
+            inputs.forEach(input => {
+                input.style.border = 'none';
+                input.style.background = 'transparent';
+                input.style.padding = '0';
+                input.style.boxShadow = 'none';
+            });
+
+            // 4. Configuramos el formato del PDF
+            const opciones = {
+                margin:       0.5,
+                filename:     'Reporte_Calificaciones_{{ grupo.nombre }}.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, backgroundColor: '#ffffff' },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // 5. Generamos el PDF y lo descargamos
+            html2pdf().set(opciones).from(elemento).save().then(() => {
+                
+                // 6. Cuando termina de descargar, regresamos la vista a la normalidad
+                botones.forEach(btn => btn.style.display = 'inline-block');
+                inputs.forEach(input => {
+                    input.style.border = '';
+                    input.style.background = '';
+                    input.style.padding = '';
+                    input.style.boxShadow = '';
+                });
+            });
+        }
+    </script>
 </body>
 </html>

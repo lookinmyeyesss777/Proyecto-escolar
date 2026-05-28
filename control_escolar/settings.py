@@ -79,25 +79,27 @@ WSGI_APPLICATION = 'control_escolar.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-#    'default2': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#       'NAME': 'ProyectoEscolarDjango',
-#      'USER': 'postgres',
-#     'PASSWORD': '2003',
-#       'HOST': 'localhost',
-#   'PORT': '5433',
-    #}
-
+    # --- CONFIGURACIÓN DE PRODUCTION / HOSTING (Activa para Render) ---
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'db_proyectoescolar'),
         'USER': os.getenv('DB_USERNAME', 'irving'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'iBbA8lMG52t6q4q0w6t6bAa0t94CvXUZ'), # <-- Ya tiene la 'l' minúscula
+        'PASSWORD': os.getenv('DB_PASSWORD', 'iBbA8lMG52t6q4q0w6t6bAa0t94CvXUZ'),
         'HOST': os.getenv('DB_HOST', 'dpg-d89qc15ckfvc738t497g-a'),
         'PORT': os.getenv('DB_PORT', '5432'),
         'OPTIONS': {
-            'sslmode': 'require', # <-- Esto soluciona el bloqueo SSL de Render
+            'sslmode': 'require', 
         },
+    },
+
+    # --- CONFIGURACIÓN LOCAL (Inactiva temporalmente) ---
+    'local': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ProyectoEscolarDjango',
+        'USER': 'postgres',
+        'PASSWORD': '2003',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 
@@ -139,3 +141,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 # Esta línea le dice a Render dónde guardar los archivos CSS cuando se suba a internet
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_URL = '/accounts/login/'

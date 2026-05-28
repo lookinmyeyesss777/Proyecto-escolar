@@ -3,5 +3,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # NUEVO: Rutas de autenticación de Django (Login, Logout, etc.)
+    path('accounts/', include('django.contrib.auth.urls')), 
+    
     path('', include('core.urls')),  # Incluye todas las rutas de la app 'core'
 ]

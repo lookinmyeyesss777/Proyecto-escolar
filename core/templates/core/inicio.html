@@ -33,7 +33,23 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Control Escolar</a>
+            <a class="navbar-brand fw-bold" href="#">Control Escolar</a>
+            
+            <div class="d-flex align-items-center">
+                
+                <span class="text-white me-3 small">
+                    <i class="bi bi-person-circle me-1"></i> Hola, {{ user.username }}
+                </span>
+                
+                <form action="{% url 'logout' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm shadow-sm fw-bold">
+                        <i class="bi bi-box-arrow-right me-1"></i> Cerrar Sesión
+                    </button>
+                </form>
+
+            </div>
+            
         </div>
     </nav>
 
@@ -75,18 +91,6 @@
                         </div>
                         <h5 class="card-title">Grupos</h5>
                         <p class="card-text text-muted">Asignación de materias, aulas y profesores.</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col">
-                <a href="/calificaciones/" class="card h-100 menu-card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <div class="icon-container text-danger">
-                            <i class="bi bi-journal-check"></i>
-                        </div>
-                        <h5 class="card-title">Calificaciones</h5>
-                        <p class="card-text text-muted">Registro de evaluación final por estudiante.</p>
                     </div>
                 </a>
             </div>
