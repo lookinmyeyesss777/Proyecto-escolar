@@ -1,27 +1,21 @@
-# ==========================
-# IMPORTS AL INICIO
-# ==========================
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-# --- IMPORTS DE SEGURIDAD (NUEVO) ---
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# Importamos TODOS los modelos
+
 from .models import Profesor, Estudiante, Materia, Carrera, Aula, Grupo, PeriodoSemestral, Horario, Calificacion
 
-# ==========================
-# VISTA DE INICIO (Función)
-# ==========================
+
 @login_required
 def inicio(request):
     return render(request, 'core/inicio.html')
 
-# ==========================
-# CRUD PERIODO SEMESTRAL (Clases)
-# ==========================
+
 class PeriodoSemestralListView(LoginRequiredMixin, ListView):
     model = PeriodoSemestral
     template_name = 'core/periodosemestral_list.html'
@@ -44,9 +38,8 @@ class PeriodoSemestralDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/periodosemestral_confirm_delete.html'
     success_url = reverse_lazy('periodosemestral_list')
 
-# ==========================
 # CRUD CARRERA
-# ==========================
+
 class CarreraListView(LoginRequiredMixin, ListView):
     model = Carrera
     template_name = 'core/carrera_list.html'
@@ -69,9 +62,8 @@ class CarreraDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/carrera_confirm_delete.html'
     success_url = reverse_lazy('carrera_list')
 
-# ==========================
 # CRUD HORARIO
-# ==========================
+
 class HorarioListView(LoginRequiredMixin, ListView):
     model = Horario
     template_name = 'core/horario_list.html'
@@ -94,9 +86,8 @@ class HorarioDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/horario_confirm_delete.html'
     success_url = reverse_lazy('horario_list')
 
-# ==========================
 # CRUD AULA
-# ==========================
+
 class AulaListView(LoginRequiredMixin, ListView):
     model = Aula
     template_name = 'core/aula_list.html'
@@ -119,9 +110,8 @@ class AulaDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/aula_confirm_delete.html'
     success_url = reverse_lazy('aula_list')
 
-# ==========================
+
 # CRUD MATERIA
-# ==========================
 class MateriaListView(LoginRequiredMixin, ListView):
     model = Materia
     template_name = 'core/materia_list.html'
@@ -144,9 +134,9 @@ class MateriaDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/materia_confirm_delete.html'
     success_url = reverse_lazy('materia_list')
 
-# ==========================
+
 # CRUD PROFESOR
-# ==========================
+
 class ProfesorListView(LoginRequiredMixin, ListView):
     model = Profesor
     template_name = 'core/profesor_list.html'
@@ -169,9 +159,7 @@ class ProfesorDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/profesor_confirm_delete.html'
     success_url = reverse_lazy('profesor_list')
 
-# ==========================
 # CRUD ESTUDIANTE
-# ==========================
 class EstudianteListView(LoginRequiredMixin, ListView):
     model = Estudiante
     template_name = 'core/estudiante_list.html'
@@ -194,9 +182,7 @@ class EstudianteDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/estudiante_confirm_delete.html'
     success_url = reverse_lazy('estudiante_list')
 
-# ==========================
 # CRUD GRUPO
-# ==========================
 class GrupoListView(LoginRequiredMixin, ListView):
     model = Grupo
     template_name = 'core/grupo_list.html'
@@ -219,9 +205,8 @@ class GrupoDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'core/grupo_confirm_delete.html'
     success_url = reverse_lazy('grupo_list')
 
-# ==========================
-# CAPTURA DE CALIFICACIONES (Función)
-# ==========================
+
+# CAPTURA DE CALIFICACIONES
 @login_required
 def capturar_calificaciones(request, grupo_id):
     grupo = get_object_or_404(Grupo, id=grupo_id)

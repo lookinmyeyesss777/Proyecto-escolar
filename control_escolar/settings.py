@@ -28,7 +28,8 @@ SECRET_KEY = 'django-insecure-vr9gxidy-o6ygy-fq+rwng(^jgq4@st*^h(e!duij4jxft&g6c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = []
+
+
 ALLOWED_HOSTS = ['proyecto-escolar-z8i7.onrender.com', 'localhost', '127.0.0.1']
 
 
@@ -79,7 +80,6 @@ WSGI_APPLICATION = 'control_escolar.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    # --- CONFIGURACIÓN DE PRODUCTION / HOSTING (Activa para Render) ---
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'db_proyectoescolar'),
@@ -92,7 +92,6 @@ DATABASES = {
         },
     },
 
-    # --- CONFIGURACIÓN LOCAL (Inactiva temporalmente) ---
     'local': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ProyectoEscolarDjango',

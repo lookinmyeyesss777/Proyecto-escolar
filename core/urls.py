@@ -38,7 +38,5 @@ urlpatterns = [
     path('materias/<int:pk>/eliminar/', views.MateriaDeleteView.as_view(), name='materia_delete'),
 
 
-
-    # Esta ruta espera recibir el ID del grupo, por ejemplo: /grupos/5/calificaciones/
     path('grupos/<int:grupo_id>/calificaciones/', views.capturar_calificaciones, name='capturar_calificaciones'),
 ]
