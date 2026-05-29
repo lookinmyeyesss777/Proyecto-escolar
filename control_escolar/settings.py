@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'control_escolar.wsgi.application'
 
 DATABASES = {
     #render
-    'production': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'db_proyectoescolar'),
         'USER': os.getenv('DB_USERNAME', 'irving'),
@@ -93,7 +93,7 @@ DATABASES = {
         },
     },
 #local
-    'default': {
+    'local': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ProyectoEscolarDjango',
         'USER': 'postgres',

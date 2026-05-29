@@ -206,7 +206,6 @@ class GrupoDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('grupo_list')
 
 
-# CAPTURA DE CALIFICACIONES
 @login_required
 def capturar_calificaciones(request, grupo_id):
     grupo = get_object_or_404(Grupo, id=grupo_id)
