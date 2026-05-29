@@ -131,14 +131,11 @@
 
     <script>
         function generarPDF() {
-            // 1. Seleccionamos lo que queremos imprimir
             const elemento = document.getElementById('zona-impresion');
             
-            // 2. Escondemos los botones de "Guardar" para que no salgan en el PDF
             const botones = document.querySelectorAll('.btn-guardar');
             botones.forEach(btn => btn.style.display = 'none');
             
-            // 3. Le quitamos el borde a las cajitas de texto para que luzca como un documento oficial
             const inputs = document.querySelectorAll('.input-calificacion');
             inputs.forEach(input => {
                 input.style.border = 'none';
@@ -147,7 +144,6 @@
                 input.style.boxShadow = 'none';
             });
 
-            // 4. Configuramos el formato del PDF
             const opciones = {
                 margin:       0.5,
                 filename:     'Reporte_Calificaciones_{{ grupo.nombre }}.pdf',
@@ -156,10 +152,8 @@
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
 
-            // 5. Generamos el PDF y lo descargamos
             html2pdf().set(opciones).from(elemento).save().then(() => {
                 
-                // 6. Cuando termina de descargar, regresamos la vista a la normalidad
                 botones.forEach(btn => btn.style.display = 'inline-block');
                 inputs.forEach(input => {
                     input.style.border = '';

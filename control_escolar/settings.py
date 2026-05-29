@@ -80,7 +80,8 @@ WSGI_APPLICATION = 'control_escolar.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    #render
+    'production': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME', 'db_proyectoescolar'),
         'USER': os.getenv('DB_USERNAME', 'irving'),
@@ -91,8 +92,8 @@ DATABASES = {
             'sslmode': 'require', 
         },
     },
-
-    'local': {
+#local
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ProyectoEscolarDjango',
         'USER': 'postgres',
